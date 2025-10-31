@@ -81,7 +81,7 @@ const handleClerkWebhook = async (req, res) => {
           console.log(`No User with Clerk id - ${id} found`);
         }
 
-        res
+        return res
           .status(200)
           .json({ success: true, message: "User updated successfully" });
       } catch (error) {
@@ -116,4 +116,19 @@ const handleClerkWebhook = async (req, res) => {
   }
 };
 
-export { handleClerkWebhook };
+const getUsersForSidebar = async (req, res) => {
+  try {
+    const currentUser = req.auth?.userId;
+
+    const filteredUsers = await User.find({
+      clerkUserId: { $ne: currentUser },
+    });
+
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    console.error("Error in getUserFor Sidebar Controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export { handleClerkWebhook, getUsersForSidebar };
