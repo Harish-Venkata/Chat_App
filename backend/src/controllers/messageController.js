@@ -95,6 +95,10 @@ export const sendMessages = async (req, res) => {
       io.to(senderSocketId).emit("newMessage", newMessage);
     }
 
+    console.log("REQ HEADERS:", req.headers);
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILE:", req.file);
+
     res.status(201).json(newMessage);
   } catch (error) {
     console.error("Error in sending message controller", error);
